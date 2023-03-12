@@ -18,32 +18,56 @@ app.post('/',async(req,res)=> {
         // https://maps.app.goo.gl/9ivZQ71CKMqRPDtQA
         const url = data.request.res.responseUrl
 
-        var {pathname,host} = new URL(url)
-  
+        var {pathname,host,hash,search} = new URL(url)
+        console.log(url)
+        console.log(host)
         var newUrl = pathname
 
         const array = newUrl.split('/')
-
-        try{
-            const array = pathname.split('@')[1].split(',')
-            const latitude = array[0]
-            const longitude = array[1]
-            const geo = new URL('geo://' + latitude + ',' + longitude)
-      
-            res.redirect(geo.href)
-        
-        }
-        catch
+        if(host==='www.google.com')
         {
-
-            var om = 'om://search?query=' + array[3]
-     
-            const regex = /\+/ig
-            om = om.replace(regex,"%20")
-        
-
-            res.redirect(om)
+            try{
+                const array = pathname.split('@')[1].split(',')
+                const latitude = array[0]
+                const longitude = array[1]
+                const geo = new URL('geo://' + latitude + ',' + longitude)
+          
+                res.redirect(geo.href)
+            
+            }
+            catch
+            {
+    
+                var om = 'om://search?query=' + array[3]
+         
+                const regex = /\+/ig
+                om = om.replace(regex,"%20")
+            
+    
+                res.redirect(om)
+            }
         }
+        else if(host==='www.openstreetmap.org')
+        {
+           
+                var arr = hash.split('/')
+                const latitude = arr[1]
+                const longitude = arr[2]
+                const geo = new URL('geo://' + latitude + ',' + longitude)
+                res.redirect(geo.href);
+         
+        }
+        else if (host==='captcha.2gis.ru')
+        {
+            const array = search.split('%2F')[7].split('%2C')
+            var latitude = array[0]
+            var longitude = array[1]
+            //   console.log(latitude,longitude)
+            const geo = new URL('geo://' + latitude + ',' + longitude)
+            //   console.log(geo.href)
+            res.redirect(geo.href)
+        }
+        
         
     })
 })
