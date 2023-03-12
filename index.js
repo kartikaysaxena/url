@@ -18,34 +18,83 @@ app.post('/',async(req,res)=> {
         // https://maps.app.goo.gl/9ivZQ71CKMqRPDtQA
         const url = data.request.res.responseUrl
 
-        var {pathname,host,hash,search} = new URL(url)
+        var {pathname,host,hash,search,path} = new URL(url)
         console.log(url)
         console.log(host)
         var newUrl = pathname
 
         const array = newUrl.split('/')
-        if(host==='www.google.com')
+        if (host==='www.google.com')
         {
-            try{
-                const array = pathname.split('@')[1].split(',')
-                const latitude = array[0]
-                const longitude = array[1]
-                const geo = new URL('geo:' + latitude + ',' + longitude)
-          
-                res.redirect(geo.href)
-            
-            }
-            catch
+            const path = pathname + search + hash
+            console.log(path)
+        
+            console.log(path.startsWith('/maps?daddr='))
+            if (path.startsWith('/maps?daddr=') || path.startsWith('/maps?saddr=') )
             {
-    
-                var om = 'om://search?query=' + array[3]
-         
+                var address = path.split('=')[1]
+                var link = 'om://search?query=' + address
                 const regex = /\+/ig
-                om = om.replace(regex,"%20")
-            
-    
-                res.redirect(om)
+                link = link.replace(regex,"%20")
+                console.log(link)
+                res.redirect(link)
             }
+            else if(path.startsWith('/maps?q=loc:'))
+            {
+                var coord = path.split(':')[1]
+                var link = 'geo:' + coord
+                console.log(link)
+                res.redirect(link)
+            }
+            else if(path.startsWith('/maps?ll='))
+            {
+                var coord = path.split('=')[1]
+                var link = 'geo:' + coord
+                console.log(link)
+                res.redirect(link)
+            }
+            else if(path.startsWith('/maps?q=') || (path.startsWith('/search?q=')))
+            {
+                var address = path.split('=')[1]
+                var link = 'om://search?query=' + address
+                const regex = /\+/ig
+                link = link.replace(regex,"%20")
+                console.log(link)
+                res.redirect(link)
+            }
+            else if (path.startsWith('/maps/search/'))
+            {
+                var address =  path.split('=')
+                var link = 'om://search?query=' + address[address.length-1]
+                console.log(link)
+                const regex = /\+/ig
+                link = link.replace(regex,"%20")
+                res.redirect(link)
+            }
+            else
+            {
+                try{
+                    const array = pathname.split('@')[1].split(',')
+                    const latitude = array[0]
+                    const longitude = array[1]
+                    const geo = new URL('geo:' + latitude + ',' + longitude)
+              
+                    res.redirect(geo.href)
+                
+                }
+                catch
+                {
+        
+                    var om = 'om://search?query=' + array[3]
+             
+                    const regex = /\+/ig
+                    om = om.replace(regex,"%20")
+                
+        
+                    res.redirect(om)
+                }
+            }
+            
         }
         else if(host==='www.openstreetmap.org')
         {
