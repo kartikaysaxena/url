@@ -62,9 +62,18 @@ app.post('/',async(req,res)=> {
                 console.log(link)
                 res.redirect(link)
             }
-            else if (path.startsWith('/maps/search/'))
+            else if (path.startsWith('/maps/search/?q='))
             {
                 var address =  path.split('=')
+                var link = 'om://search?query=' + address[address.length-1]
+                console.log(link)
+                const regex = /\+/ig
+                link = link.replace(regex,"%20")
+                res.redirect(link)
+            }
+            else if (path.startsWith('/maps/search/'))
+            {
+                var address = path.split('/')
                 var link = 'om://search?query=' + address[address.length-1]
                 console.log(link)
                 const regex = /\+/ig
