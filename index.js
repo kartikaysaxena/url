@@ -7,7 +7,7 @@ const url = require('url')
 app.use(express.urlencoded({extended:true}))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
-
+const port = process.env.PORT || 3000
 app.get('/',(req,res)=> {
     res.render('home')
 })
@@ -47,7 +47,7 @@ app.post('/',async(req,res)=> {
     })
 })
 
-app.listen(3000,()=> {
-    console.log('SERVER RUNNING AT 3000')
+app.listen(port,()=> {
+    console.log(`SERVER RUNNING AT ${port}`)
 
 })
