@@ -1,3 +1,3 @@
-let str = '+hehe+oohoho+'
-let newStr = str.replace('/+/g', 'p')
-console.log(newStr)
+const regex = /\+/ig
+const text = "kartikay is + + + + is is is is very good"
+console.log(text.replace(regex,'%20'))
