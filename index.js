@@ -30,7 +30,7 @@ app.post('/',async(req,res)=> {
                 const array = pathname.split('@')[1].split(',')
                 const latitude = array[0]
                 const longitude = array[1]
-                const geo = new URL('geo://' + latitude + ',' + longitude)
+                const geo = new URL('geo:' + latitude + ',' + longitude)
           
                 res.redirect(geo.href)
             
@@ -53,7 +53,7 @@ app.post('/',async(req,res)=> {
                 var arr = hash.split('/')
                 const latitude = arr[1]
                 const longitude = arr[2]
-                const geo = new URL('geo://' + latitude + ',' + longitude)
+                const geo = new URL('geo:' + latitude + ',' + longitude)
                 res.redirect(geo.href);
          
         }
@@ -63,7 +63,7 @@ app.post('/',async(req,res)=> {
             var latitude = array[0]
             var longitude = array[1]
             //   console.log(latitude,longitude)
-            const geo = new URL('geo://' + latitude + ',' + longitude)
+            const geo = new URL('geo:' + latitude + ',' + longitude)
             //   console.log(geo.href)
             res.redirect(geo.href)
         }
