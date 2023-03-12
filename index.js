@@ -29,7 +29,7 @@ app.post('/',async(req,res)=> {
             const path = pathname + search + hash
             console.log(path)
         
-            console.log(path.startsWith('/maps?daddr='))
+  
             if (path.startsWith('/maps?daddr=') || path.startsWith('/maps?saddr=') )
             {
                 var address = path.split('=')[1]
@@ -62,6 +62,7 @@ app.post('/',async(req,res)=> {
                 console.log(link)
                 res.redirect(link)
             }
+    
             else if (path.startsWith('/maps/search/?q='))
             {
                 var address =  path.split('=')
@@ -71,7 +72,22 @@ app.post('/',async(req,res)=> {
                 link = link.replace(regex,"%20")
                 res.redirect(link)
             }
-            else if (path.startsWith('/maps/search/'))
+            else if (path.startsWith('/maps/search/') )
+            {
+                var address = path.split('/')
+                if (address[address.length-1].charAt(0)==='@')
+                {
+                    address[address.length-1] = address[address.length-1].substring(1)
+                    console.log(address[address.length-1])
+                }
+               
+                var link = 'om://search?query=' + address[address.length-1]
+                console.log(link)
+                const regex = /\+/ig
+                link = link.replace(regex,"%20")
+                res.redirect(link)
+            }
+            else if(path.startsWith('/maps/dir/'))
             {
                 var address = path.split('/')
                 var link = 'om://search?query=' + address[address.length-1]
@@ -93,6 +109,7 @@ app.post('/',async(req,res)=> {
                 }
                 catch
                 {
+                    console.log('here')
         
                     var om = 'om://search?query=' + array[3]
              
