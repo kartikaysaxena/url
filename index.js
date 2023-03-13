@@ -19,17 +19,18 @@ app.post('/',async(req,res)=> {
         // https://maps.app.goo.gl/9ivZQ71CKMqRPDtQA
         const url = data.request.res.responseUrl
 
-        console.log(url)
-        if (req.body.url.endsWith('&ucbcb=1'))
-        {
-            let len = url.length
-            url = url.slice(0,len-8)
-            console.log('android fix')
-        }
+        
 
         var {pathname,host,hash,search,path} = new URL(url)
         console.log(url)
         console.log(host)
+      
+        if (pathname.endsWith('&ucbcb=1'))
+        {
+            let len = pathname.length
+            pathname = pathname.slice(0,len-8)
+            console.log('android fix')
+        }
         var newUrl = pathname
 
         const array = newUrl.split('/')
