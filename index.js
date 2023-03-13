@@ -20,6 +20,7 @@ app.post('/',async(req,res)=> {
         var url = data.request.res.responseUrl
 
        url = url.toString()
+       console.log(url)
        if (url.endsWith('&ucbcb=1') || url.endsWith('?ucbcb=1'))
        {
            let len = url.length
