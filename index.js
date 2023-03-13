@@ -18,7 +18,7 @@ app.post('/',async(req,res)=> {
     .then(data => {
         // https://maps.app.goo.gl/9ivZQ71CKMqRPDtQA
         var url = data.request.res.responseUrl
-
+        console.log(url)
        url = url.toString()
        console.log(url)
        if (url.endsWith('&ucbcb=1') || url.endsWith('?ucbcb=1'))
