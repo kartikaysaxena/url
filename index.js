@@ -17,20 +17,22 @@ app.post('/',async(req,res)=> {
     axios.get(req.body.url)
     .then(data => {
         // https://maps.app.goo.gl/9ivZQ71CKMqRPDtQA
-        const url = data.request.res.responseUrl
+        var url = data.request.res.responseUrl
 
-        
+       url = url.toString()
+       if (url.endsWith('&ucbcb=1'))
+       {
+           let len = url.length
+           url = url.slice(0,len-8)
+           console.log('android fix')
+       } 
 
         var {pathname,host,hash,search,path} = new URL(url)
         console.log(url)
         console.log(host)
+        console.log(pathname)
       
-        if (pathname.endsWith('&ucbcb=1'))
-        {
-            let len = pathname.length
-            pathname = pathname.slice(0,len-8)
-            console.log('android fix')
-        }
+       
         var newUrl = pathname
 
         const array = newUrl.split('/')
