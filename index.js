@@ -25,7 +25,12 @@ app.post('/',async(req,res)=> {
        {
            url = url.slice(0,-8)
            console.log('android fix')
-       } 
+       }
+       else if (url.endsWith('/'))
+       {
+           url = url.slice(0,-1)
+           console.log('/ at end fixed')
+       }
 
         var {pathname,host,hash,search,path} = new URL(url)
         console.log(url)
@@ -104,6 +109,7 @@ app.post('/',async(req,res)=> {
             else if(path.startsWith('/maps/dir/'))
             {
                 var address = path.split('/')
+                console.log(address)
                 var link = 'om://search?query=' + address[address.length-1]
                 console.log(link)
                 const regex = /\+/ig
