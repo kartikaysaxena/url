@@ -24,6 +24,7 @@ app.post('/',async(req,res)=> {
         var newUrl = pathname
 
         const array = newUrl.split('/')
+        console.log(array)
         if (host==='www.google.com')
         {
             const path = pathname + search + hash
@@ -53,7 +54,7 @@ app.post('/',async(req,res)=> {
                 console.log(link)
                 res.redirect(link)
             }
-            else if(path.startsWith('/maps?q=') || (path.startsWith('/search?q=')))
+            else if(path.startsWith('/maps?q=') || (path.startsWith('/search?q=')) || (path.startsWith('/maps/place/?q')))
             {
                 var address = path.split('=')[1]
                 var link = 'om://search?query=' + address
@@ -96,13 +97,67 @@ app.post('/',async(req,res)=> {
                 link = link.replace(regex,"%20")
                 res.redirect(link)
             }
+            // else if (path.startsWith('/maps/place/') && array[4].charAt(0)==='@')
+            // {
+            //     array[4] =array[4].substring(1)
+            //     array[3] = array[4].split(',')[0] + ',' + array[4].split(',')[1]
+            //     var link = 'geo:' + array[3]
+            //     console.log(link)
+            //     res.redirect(link) 
+            // }
+            // else if (path.startsWith('/maps/place/'))
+            // {
+            //     var link = 'om://search?query=' + array[3]
+            //     console.log(link)
+            //     const regex = /\+/ig
+            //     link = link.replace(regex,"%20")
+            //     res.redirect(link)
+            // }
+            else if (path.startsWith('/maps/place'))
+            {
+                try 
+                {
+                    if (array[4].charAt(0)==='@')
+                    {
+                        array[4] =array[4].substring(1)
+                            array[3] = array[4].split(',')[0] + ',' + array[4].split(',')[1]
+                            var link = 'geo:' + array[3]
+                            console.log(link)
+                            res.redirect(link) 
+                    }
+                    else 
+                    {
+                        var link = 'om://search?query=' + array[3]
+                        console.log(link)
+                        const regex = /\+/ig
+                        link = link.replace(regex,"%20")
+                        res.redirect(link)
+                    }
+                }
+                catch
+                {
+                    var link = 'om://search?query=' + array[3]
+                    console.log(link)
+                    const regex = /\+/ig
+                    link = link.replace(regex,"%20")
+                    res.redirect(link)
+                }
+            }
+
+
             else
             {
                 try{
-                    const array = pathname.split('@')[1].split(',')
-                    const latitude = array[0]
-                    const longitude = array[1]
-                    const geo = new URL('geo:' + latitude + ',' + longitude)
+                    console.log(path.split('@'))
+                    const coord = path.split('@')
+                    // const array = pathname.split('@')[1].split(',')
+                    // const latitude = array[0]
+                    // const longitude = array[1]
+                    if(coord.length===1)
+                    {
+                        throw false
+                    }
+                    const geo = new URL('geo:' + coord[coord.length-1])
               
                     res.redirect(geo.href)
                 
@@ -111,7 +166,7 @@ app.post('/',async(req,res)=> {
                 {
                     console.log('here')
         
-                    var om = 'om://search?query=' + array[3]
+                    var om = 'om://search?query=' + array[array.length-2]
              
                     const regex = /\+/ig
                     om = om.replace(regex,"%20")
