@@ -12,6 +12,11 @@ app.get('/',(req,res)=> {
     res.render('home')
 })
 app.post('/',async(req,res)=> {
+    if (req.body.url.endsWith('&ucbcb=1'))
+    {
+        let len = req.body.url.length
+        req.body.url = req.body.url.slice(0,len-8)
+    }
 
     axios.get(req.body.url)
     .then(data => {
