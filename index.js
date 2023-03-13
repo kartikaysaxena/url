@@ -12,16 +12,20 @@ app.get('/',(req,res)=> {
     res.render('home')
 })
 app.post('/',async(req,res)=> {
-    if (req.body.url.endsWith('&ucbcb=1'))
-    {
-        let len = req.body.url.length
-        req.body.url = req.body.url.slice(0,len-8)
-    }
+ 
 
     axios.get(req.body.url)
     .then(data => {
         // https://maps.app.goo.gl/9ivZQ71CKMqRPDtQA
         const url = data.request.res.responseUrl
+
+        console.log(url)
+        if (req.body.url.endsWith('&ucbcb=1'))
+        {
+            let len = url.length
+            url = url.slice(0,len-8)
+            console.log('android fix')
+        }
 
         var {pathname,host,hash,search,path} = new URL(url)
         console.log(url)
