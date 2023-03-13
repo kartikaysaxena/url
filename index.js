@@ -50,6 +50,7 @@ app.post('/',async(req,res)=> {
             else if(path.startsWith('/maps?ll='))
             {
                 var coord = path.split('=')[1]
+                console.log(coord)
                 var link = 'geo:' + coord
                 console.log(link)
                 res.redirect(link)
