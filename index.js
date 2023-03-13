@@ -23,8 +23,7 @@ app.post('/',async(req,res)=> {
        console.log(url)
        if (url.endsWith('&ucbcb=1') || url.endsWith('?ucbcb=1'))
        {
-           let len = url.length
-           url = url.slice(0,len-8)
+           url = url.slice(0,-8)
            console.log('android fix')
        } 
 
