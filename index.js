@@ -183,7 +183,7 @@ app.post('/',async(req,res)=> {
              
                     const regex = /\+/ig
                     om = om.replace(regex,"%20")
-                
+                    console.log(om)
         
                     res.redirect(om)
                 }
